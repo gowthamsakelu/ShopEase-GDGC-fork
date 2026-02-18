@@ -11,7 +11,10 @@ dotenv.config();
 
 const app = express();
 
-app.use(helmet());
+// `helmet` package typings can be non-callable in some setups (TS2349).
+// Cast to `any` to call the factory and obtain the middleware function.
+const helmetMiddleware = (helmet as any)();
+app.use(helmetMiddleware);
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
